@@ -11,7 +11,8 @@
                                 <h5 class="m-b-10">Dashboard</h5>
                             </div>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/dashboard-admin">Main Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('transaction.report') }}">Transaction
+                                        Dashboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -53,12 +54,9 @@
                 <div class="col-md-6 col-xl-4">
                     <div class="card">
                         <div class="card-body">
-                            <h6 class="mb-2 f-w-400 text-muted">Total Products</h6>
-                            <h4 class="mb-3">{{ $productCount }} <span
-                                    class="badge bg-light-primary border border-primary"><i class="ti ti-trending-up"></i>
-                                    59.3%</span></h4>
-                            <p class="mb-0 text-muted text-sm">Increased by <span class="text-primary">35,000</span> this
-                                year</p>
+                            <h6 class="mb-2 f-w-400 text-muted">Total Transaction</h6>
+                            <h4 class="mb-3">{{ $productCount }} </h4>
+
                         </div>
                     </div>
                 </div>
@@ -67,10 +65,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h6 class="mb-2 f-w-400 text-muted">Today's Transactions</h6>
-                            <h4 class="mb-3">{{ $todayTransactionCount ?? 'N/A' }} <span
-                                    class="badge bg-light-warning border border-warning"><i class="ti ti-trending-down"></i>
-                                    27.4%</span></h4>
-                            <p class="mb-0 text-muted text-sm">Compared to previous day</p>
+                            <h4 class="mb-3">{{ $todayTransactionCount ?? 'N/A' }} </h4>
                         </div>
                     </div>
                 </div>
@@ -79,10 +74,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h6 class="mb-2 f-w-400 text-muted">Total Revenue</h6>
-                            <h4 class="mb-3">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }} <span
-                                    class="badge bg-light-danger border border-danger"><i class="ti ti-trending-down"></i>
-                                    27.4%</span></h4>
-                            <p class="mb-0 text-muted text-sm">From the beginning of the year</p>
+                            <h4 class="mb-3">Rp {{ number_format($totalRevenue ?? 0, 0, ',', '.') }} </h4>
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,7 @@ class TransactionController extends Controller
         // Search berdasarkan nama kasir
         if ($request->has('search') && $request->search != '') {
             $query->whereHas('user', function ($q) use ($request) {
-                $q->where('name', 'like', '%'.$request->search.'%');
+                $q->where('username', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -188,7 +188,7 @@ class TransactionController extends Controller
         ])->with('details')->get()->flatMap->details
             ->sum(fn ($item) => $item->quantity * $item->price);
 
-        $productCount = Product::count();
+        $productCount = Transaction::count();
         $newestProducts = Product::latest()->take(5)->get();
 
         // Transaksi per hari minggu ini
@@ -213,10 +213,15 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show($id)
     {
-        //
+        return view('admin.transaction.show', [
+            'transaction' => Transaction::with(['details.product'])->findOrFail($id),
+            'title' => "Transaction Detail"
+        ]);
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

@@ -7,7 +7,7 @@
                 <div class="page-block">
                     <h5 class="m-b-10">Add Transaction</h5>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Transactions</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin_transaction') }}">Transactions</a></li>
                         <li class="breadcrumb-item active">Create</li>
                     </ul>
                 </div>

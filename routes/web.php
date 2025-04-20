@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminDashboard;
 use App\Http\Controllers\CashierDashboard;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DontHaveAccess;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProductController;
@@ -32,7 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
     // admin
     Route::get('/dashboard-admin', [AdminDashboard::class, 'index'])->middleware('userAccess:admin');
-    // admin product
+    // product
     Route::get('/product-management', [ProductController::class, 'index'])->middleware('userAccess:admin')->name('admin_product');
     Route::get('/product-management/create', [ProductController::class, 'create'])->middleware('userAccess:admin')->name('admin_product_create');
     Route::post('/product-management/create', [ProductController::class, 'store'])->middleware('userAccess:admin')->name('admin_product_store');
@@ -40,12 +41,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product-management-delete/{id}', [ProductController::class, 'destroy'])->middleware('userAccess:admin');
     Route::get('/product-management/{product}/edit', [ProductController::class, 'edit'])->middleware('userAccess:admin');
     Route::post('/product-management/{id}/update', [ProductController::class, 'update'])->middleware('userAccess:admin');
+    Route::get('/product/report', [ProductController::class, 'report'])->name('admin_product_report');
+    Route::get('/product-report-pdf', [ProductController::class, 'reportPdf'])->name('product.report.pdf');
 
-    // admin transaction
-    Route::get('/transaction-management', [TransactionController::class, 'index'])->middleware('userAccess:admin')->name('admin_transaction');
-    Route::get('/transaction-management/report', [TransactionController::class, 'report'])->middleware('userAccess:admin')->name('transaction.report');
+
+    // category
+    Route::resource('/category', CategoryController::class)->middleware('userAccess:admin');
+
+
+    // admin transaction cashier and admin
+    Route::get('/transaction-management', [TransactionController::class, 'index'])->name('admin_transaction');
+    Route::get('/transaction-management/report', [TransactionController::class, 'report'])->name('transaction.report');
     Route::get('/transaction-report-pdf', [TransactionController::class, 'reportPdf'])->name('transaction.report.pdf');
-    Route::get('/transaction-management/{id}', [TransactionController::class, 'show'])->middleware('userAccess:admin')->name('transaction.show');
+    Route::get('/transaction/{id}', [TransactionController::class, 'show'])->name('transaction.show');
     Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transaction.create');
     Route::get('/transaction/{transaction}/print', [TransactionController::class, 'print'])->name('admin_transaction.print');
     Route::post('/transactions', [TransactionController::class, 'store'])->name('transaction.store');
@@ -53,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // kasir
-    Route::get('/dashboard-cashier', [CashierDashboard::class, 'index'])->middleware('userAccess:cashier');
+    Route::get('/dashboard-cashier', [CashierDashboard::class, 'index'])->middleware('userAccess:cashier')->name('dashboard.cashier');
 });
 
 Route::get('/home', function () {

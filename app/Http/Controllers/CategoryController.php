@@ -3,64 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Category::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+
+        $categories = $query->latest()->paginate(10);
+
+        return view('admin.category.index', [
+            'categories' => $categories,
+            'title' => 'Category Management',
+            'request' => $request
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('admin.category.create', [
+            'title' => 'Add Category'
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:100', 'unique:categories,name']
+        ]);
+
+        $category = Category::create($validatedData);
+        session()->flash('newest_id', $category->id);
+
+        return redirect()->route('category.index')->with('success', 'Category created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Category $category)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Category $category)
     {
-        //
+        return view('admin.category.edit', [
+            'title' => 'Category Edit',
+            'category' => $category
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(Request $request, Category $category)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => ['required', 'max:100', 'unique:categories,name,'.$category->id]
+        ]);
+
+        $category->update($validatedData);
+        session()->flash('updated_id', $category->id);
+
+        return redirect()->route('category.index')->with('success', 'Category updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('category.index')->with('success', 'Category deleted successfully.');
     }
 }

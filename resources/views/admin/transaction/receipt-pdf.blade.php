@@ -69,7 +69,7 @@
         <div class="logo">
             <h2 class="m-0 fw-bold text-primary">Shop<span class="text-dark">App</span></h2>
         </div>
-        <p>Jl. Teknologi No.1, KampusKita</p>
+        <p>Jl. Kemenangan, Jakarta Indonesia</p>
         <p>{{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d M Y, H:i') }}</p>
         <div class="divider"></div>
     </div>
